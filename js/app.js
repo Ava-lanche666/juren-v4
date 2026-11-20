@@ -814,32 +814,37 @@ async function flipMotivationQuote() {
     ui.quoteIndex = nextIndex;
     if (copy?.isConnected) copy.innerHTML = motivationQuoteContentHTML(MOTIVATION_QUOTES[nextIndex]);
   };
-  if (!card || !copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!card || !copy) {
     update();
     if (!copy) renderView();
     return;
   }
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const outClass = reducedMotion ? 'is-fading-out' : 'is-flipping-out';
+  const inClass = reducedMotion ? 'is-fading-in' : 'is-flipping-in';
   ui.quoteSwapping = true;
   const button = card.querySelector('.motivation-next');
   button.disabled = true;
+  button.textContent = '换卡中…';
   card.setAttribute('aria-busy', 'true');
   card.style.height = `${card.getBoundingClientRect().height}px`;
   try {
-    card.classList.add('is-flipping-out');
-    await new Promise((resolve) => setTimeout(resolve, 220));
+    card.classList.add(outClass);
+    await new Promise((resolve) => setTimeout(resolve, reducedMotion ? 220 : 420));
     update();
     if (!card.isConnected) return;
     card.style.height = '';
     card.style.height = `${card.offsetHeight}px`;
-    card.classList.remove('is-flipping-out');
-    card.classList.add('is-flipping-in');
-    await new Promise((resolve) => setTimeout(resolve, 320));
+    card.classList.remove(outClass);
+    card.classList.add(inClass);
+    await new Promise((resolve) => setTimeout(resolve, reducedMotion ? 260 : 480));
   } finally {
-    card.classList.remove('is-flipping-out', 'is-flipping-in');
+    card.classList.remove(outClass, inClass);
     card.style.height = '';
     card.removeAttribute('aria-busy');
     button.disabled = false;
+    button.textContent = '换一句';
     ui.quoteSwapping = false;
   }
 }

@@ -18,17 +18,21 @@
 .motivation-quote figcaption { color:var(--ink-2); font-size:calc(11px * var(--user-font-scale)); }
 .motivation-quote a { color:inherit; text-underline-offset:3px; }
 .motivation-next { flex:none; padding:7px 11px; border:1px solid var(--glass-edge,var(--line)); border-radius:999px; background:var(--glass-soft,var(--surface)); color:var(--ink); font:inherit; font-size:calc(11px * var(--user-font-scale)); cursor:pointer; }
-.motivation-next:disabled { cursor:default; }
-.motivation-quote.is-flipping-out { animation:quote-card-out 220ms ease-in both; }
-.motivation-quote.is-flipping-in { animation:quote-card-in 320ms cubic-bezier(.16,.8,.2,1) both; }
+.motivation-next:disabled { cursor:default; opacity:.85; }
+.motivation-quote.is-flipping-out { animation:quote-card-out 420ms cubic-bezier(.55,.02,.78,.32) both; }
+.motivation-quote.is-flipping-in { animation:quote-card-in 480ms cubic-bezier(.16,.85,.2,1) both; }
 @keyframes quote-card-out {
   from { transform:perspective(900px) rotateY(0) scale(1); opacity:1; }
-  to { transform:perspective(900px) rotateY(-86deg) scale(.96); opacity:.72; }
+  to { transform:perspective(900px) translateX(-24px) rotateY(-78deg) scale(.93); opacity:.48; }
 }
 @keyframes quote-card-in {
-  from { transform:perspective(900px) rotateY(86deg) scale(.96); opacity:.72; }
+  from { transform:perspective(900px) translateX(24px) rotateY(78deg) scale(.93); opacity:.48; }
   to { transform:perspective(900px) rotateY(0) scale(1); opacity:1; }
 }
+.motivation-quote.is-fading-out { animation:quote-fade-out 220ms ease-in both; }
+.motivation-quote.is-fading-in { animation:quote-fade-in 260ms ease-out both; }
+@keyframes quote-fade-out { from { opacity:1; } to { opacity:.22; } }
+@keyframes quote-fade-in { from { opacity:.22; } to { opacity:1; } }
 @media (prefers-reduced-motion:reduce) {
   .motivation-quote.is-flipping-out,.motivation-quote.is-flipping-in { animation:none; }
 }
