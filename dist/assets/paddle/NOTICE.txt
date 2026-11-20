@@ -1,0 +1,14 @@
+Local OCR components
+
+PaddleOCR.js 0.4.2 and PP-OCRv5 mobile detection/recognition models:
+https://github.com/PaddlePaddle/PaddleOCR/tree/main/paddleocr-js
+Models: https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/
+License: Apache-2.0 (PaddlePaddle)
+
+ONNX Runtime Web 1.31.1: https://github.com/microsoft/onnxruntime
+License: MIT (Microsoft)
+
+OpenCV.js: https://github.com/opencv/opencv
+License: Apache-2.0 (OpenCV contributors)
+
+All model and runtime files are served from this website and loaded only when local OCR is requested. No question image is transmitted to the model hosts.

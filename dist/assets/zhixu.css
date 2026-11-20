@@ -1,0 +1,5 @@
+/* 旧版 PWA 缓存兼容：0.1 的 HTML 引用 assets/zhixu.css。
+   品牌升级后保留这个入口，避免已安装用户看到无样式的页面。 */
+@import url("./juren.css");
+
+@import url("./warm.css");
