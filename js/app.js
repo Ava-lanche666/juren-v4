@@ -150,6 +150,7 @@ const ui = {
   weatherBusy: false,
   focus: { remaining: savedFocusMinutes * 60, running: false, timer: null, total: savedFocusMinutes * 60 },
   quoteIndex: Math.floor(Math.random() * MOTIVATION_QUOTES.length),
+  quoteSwapping: false,
   lockTimer: null,
   clockTimer: null,
   alarmTimers: new Map(),
@@ -791,14 +792,56 @@ function focusStripHTML() {
     </div>`;
 }
 
+function motivationQuoteContentHTML(quote) {
+  return `<span class="motivation-kicker">今日一句 · 砥砺前行</span><blockquote>${esc(quote.text)}</blockquote>
+    <figcaption>— ${esc(quote.author)} <a href="${quote.url}" target="_blank" rel="noopener noreferrer" title="查看原文出处">${esc(quote.work)}</a></figcaption>`;
+}
+
 function motivationQuoteHTML() {
-  const quote = MOTIVATION_QUOTES[ui.quoteIndex];
   return `<figure class="motivation-quote">
     <span class="motivation-star" aria-hidden="true">★</span>
-    <div><span class="motivation-kicker">今日一句 · 砥砺前行</span><blockquote>${esc(quote.text)}</blockquote>
-      <figcaption>— ${esc(quote.author)} <a href="${quote.url}" target="_blank" rel="noopener noreferrer" title="查看原文出处">${esc(quote.work)}</a></figcaption></div>
+    <div class="motivation-copy" aria-live="polite">${motivationQuoteContentHTML(MOTIVATION_QUOTES[ui.quoteIndex])}</div>
     <button class="motivation-next" data-action="next-quote" type="button" aria-label="换一句名言">换一句</button>
   </figure>`;
+}
+
+async function flipMotivationQuote() {
+  if (ui.quoteSwapping || MOTIVATION_QUOTES.length < 2) return;
+  const nextIndex = (ui.quoteIndex + 1 + Math.floor(Math.random() * (MOTIVATION_QUOTES.length - 1))) % MOTIVATION_QUOTES.length;
+  const card = $('.motivation-quote');
+  const copy = card?.querySelector('.motivation-copy');
+  const update = () => {
+    ui.quoteIndex = nextIndex;
+    if (copy?.isConnected) copy.innerHTML = motivationQuoteContentHTML(MOTIVATION_QUOTES[nextIndex]);
+  };
+  if (!card || !copy || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    update();
+    if (!copy) renderView();
+    return;
+  }
+
+  ui.quoteSwapping = true;
+  const button = card.querySelector('.motivation-next');
+  button.disabled = true;
+  card.setAttribute('aria-busy', 'true');
+  card.style.height = `${card.getBoundingClientRect().height}px`;
+  try {
+    card.classList.add('is-flipping-out');
+    await new Promise((resolve) => setTimeout(resolve, 220));
+    update();
+    if (!card.isConnected) return;
+    card.style.height = '';
+    card.style.height = `${card.offsetHeight}px`;
+    card.classList.remove('is-flipping-out');
+    card.classList.add('is-flipping-in');
+    await new Promise((resolve) => setTimeout(resolve, 320));
+  } finally {
+    card.classList.remove('is-flipping-out', 'is-flipping-in');
+    card.style.height = '';
+    card.removeAttribute('aria-busy');
+    button.disabled = false;
+    ui.quoteSwapping = false;
+  }
 }
 
 function focusClockText() {
@@ -2775,8 +2818,7 @@ async function handleAction(action, ds = {}, el = null) {
       resetFocus();
       break;
     case 'next-quote':
-      ui.quoteIndex = (ui.quoteIndex + 1 + Math.floor(Math.random() * (MOTIVATION_QUOTES.length - 1))) % MOTIVATION_QUOTES.length;
-      renderView();
+      await flipMotivationQuote();
       break;
     case 'chat-starter':
       if (ds.mode === 'wrong') {
