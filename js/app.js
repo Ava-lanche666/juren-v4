@@ -1051,7 +1051,7 @@ function timelineHTML() {
         <h3>这周还没有下一件事。</h3>
         <p>先放一件真正重要的事，其他的可以慢慢来。</p>
       </div>
-      <button class="btn btn--sm btn--ghost" data-action="add-event" style="color:var(--paper-2);border-color:rgba(250,247,239,.25);align-self:flex-start;margin-top:14px" type="button">${icon('plus', 14)} 添加日程</button>
+      <button class="btn btn--sm btn--ghost next-add-button" data-action="add-event" type="button">${icon('plus', 14)} 添加日程</button>
     </article>`;
 
   return `

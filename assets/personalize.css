@@ -24,6 +24,17 @@
 
 .photo-capture-tip { margin:0 0 8px; color:var(--ink-2); font-size:calc(11px * var(--user-font-scale)); line-height:1.5; }
 
+/* 接下来卡片始终使用深色底，操作按钮需要独立的浅色前景。 */
+:root[data-theme] .next-card .next-add-button {
+  align-self:flex-start; margin-top:14px; font-size:calc(13px * var(--user-font-scale));
+  color:#fff; background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.48);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.17);
+}
+:root[data-theme] .next-card .next-add-button:hover,
+:root[data-theme] .next-card .next-add-button:focus-visible {
+  color:#fff; background:rgba(255,255,255,.25); border-color:rgba(255,255,255,.72);
+}
+
 /* 人民：主题标志使用用户提供的镰刀锤子图样。 */
 :root[data-theme="revolution"] {
   --paper:#f6eee5; --paper-2:#fff8ef; --surface:#fffaf4; --surface-2:#f0e1d4;
