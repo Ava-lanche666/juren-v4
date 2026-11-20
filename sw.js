@@ -3,7 +3,7 @@
  * 所有业务数据在 localStorage 的加密仓库里，离线也能打开。
  */
 
-const CACHE = 'juren-shell-v26';
+const CACHE = 'juren-shell-v27';
 const SHELL = [
   './',
   './index.html',
@@ -92,10 +92,10 @@ self.addEventListener('fetch', (event) => {
 
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
-  const target = new URL(event.notification.data?.url || './#timeline', self.location.origin).href;
+  const target = new URL(event.notification.data?.url || './#timeline', self.registration.scope).href;
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
-      const existing = list.find((c) => c.url.startsWith(self.location.origin));
+      const existing = list.find((c) => c.url.startsWith(self.registration.scope));
       if (existing) {
         existing.navigate(target);
         return existing.focus();

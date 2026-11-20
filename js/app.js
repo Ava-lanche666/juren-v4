@@ -3009,14 +3009,15 @@ async function handleAction(action, ds = {}, el = null) {
       break;
     case 'share-app':
       try {
+        const shareUrl = new URL('./', document.baseURI).href;
         if (navigator.share) {
-          await navigator.share({ title: '聚仁 · 全能学习助手', url: location.origin });
+          await navigator.share({ title: '聚仁 · 全能学习助手', url: shareUrl });
         } else {
-          await navigator.clipboard.writeText(location.origin);
+          await navigator.clipboard.writeText(shareUrl);
           showToast('访问链接已复制，发给同学即可');
         }
       } catch (err) {
-        if (err?.name !== 'AbortError') showToast(location.origin);
+        if (err?.name !== 'AbortError') showToast(new URL('./', document.baseURI).href);
       }
       break;
     case 'install':
