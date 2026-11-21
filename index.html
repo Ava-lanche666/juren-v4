@@ -12,7 +12,7 @@
   <script>
     try {
       const savedTheme = localStorage.getItem('juren.ui.theme');
-      document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'mono', 'aurora', 'graphite', 'revolution'].includes(savedTheme) ? savedTheme : 'warm';
+      document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'mono', 'aurora', 'graphite', 'revolution', 'plum'].includes(savedTheme) ? savedTheme : 'warm';
     } catch (_) { document.documentElement.dataset.theme = 'warm'; }
   </script>
   <meta name="description" content="聚仁：把错题变成方法，把日程排成节奏。一个本地优先、可安装到手机和电脑的学习助手。">
@@ -29,8 +29,10 @@
   <link rel="stylesheet" href="./assets/glass.css?v=25">
   <link rel="stylesheet" href="./assets/week-agenda.css?v=25">
   <link rel="stylesheet" href="./assets/personalize.css?v=32">
+  <link rel="stylesheet" href="./assets/plum.css?v=33">
 </head>
 <body>
+  <div class="plum-snow" aria-hidden="true"></div>
   <div id="boot" class="boot">
     <div class="boot-mark" aria-hidden="true"><i></i><i></i><i></i></div>
     <p>正在打开你的空间…</p>
@@ -103,6 +105,7 @@
             <button class="theme-option" type="button" data-theme-choice="aurora" aria-pressed="false" title="极光玻璃"><span class="theme-swatch" aria-hidden="true"></span><span>极光玻璃</span></button>
             <button class="theme-option" type="button" data-theme-choice="graphite" aria-pressed="false" title="石墨黑"><span class="theme-swatch" aria-hidden="true"></span><span>石墨黑</span></button>
             <button class="theme-option" type="button" data-theme-choice="revolution" aria-pressed="false" title="人民"><span class="theme-swatch" aria-hidden="true"></span><span>人民</span></button>
+            <button class="theme-option" type="button" data-theme-choice="plum" aria-pressed="false" title="梅"><span class="theme-swatch" aria-hidden="true"></span><span>梅</span></button>
           </div>
         </div>
 
@@ -296,6 +299,6 @@
     <div class="noscript">聚仁需要启用 JavaScript 才能运行。你的数据不会被上传。</div>
   </noscript>
 
-  <script type="module" src="./js/app.js?v=32"></script>
+  <script type="module" src="./js/app.js?v=33"></script>
 </body>
 </html>
