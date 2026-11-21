@@ -3,7 +3,7 @@
  */
 
 import * as store from './store.js';
-import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=38';
+import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=40';
 import * as remember from './remember.js';
 import { icon, weatherMeta, weatherIcon, weatherTip } from './icons.js';
 import {
@@ -799,6 +799,7 @@ function motivationQuoteContentHTML(quote) {
 
 function motivationQuoteHTML() {
   return `<figure class="motivation-quote">
+    <span class="fracture-skin" aria-hidden="true"></span>
     <span class="motivation-star" aria-hidden="true">★</span>
     <div class="motivation-copy" aria-live="polite">${motivationQuoteContentHTML(MOTIVATION_QUOTES[ui.quoteIndex])}</div>
     <button class="motivation-next" data-action="next-quote" type="button" aria-label="换一句名言">换一句</button>
@@ -1083,6 +1084,7 @@ function timelineHTML() {
 
   const nextCard = next ? `
     <article class="next-card">
+      <span class="fracture-skin" aria-hidden="true"></span>
       <p class="eyebrow eyebrow--light">UP NEXT / 接下来</p>
       <div class="next-main">
         <div class="next-time">${esc(next.start)}</div>
@@ -1094,6 +1096,7 @@ function timelineHTML() {
       <div class="next-count" id="nextCountdown">${nextStart ? nextCountdownHTML() : ''}</div>
     </article>` : `
     <article class="next-card">
+      <span class="fracture-skin" aria-hidden="true"></span>
       <p class="eyebrow eyebrow--light">UP NEXT / 接下来</p>
       <div class="next-empty">
         <h3>这周还没有下一件事。</h3>

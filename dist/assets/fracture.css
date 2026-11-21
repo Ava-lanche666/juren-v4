@@ -27,9 +27,9 @@
 .auth-fracture-options button[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); font-weight:700; }
 .auth-fracture-options button:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 
-:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.72; }
-:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.80; }
-:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.88; }
+:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.72; --prism-opacity:.45; }
+:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.80; --prism-opacity:.78; }
+:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.88; --prism-opacity:1; }
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
   content:""; position:absolute; inset:0; z-index:3; border-radius:inherit; pointer-events:none;
@@ -47,3 +47,29 @@
   :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after { opacity:calc(var(--fracture-opacity) * .65); }
 }
 @media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }
+
+/* 首页卡片使用专门的局部撞击纹。多层偏移线模拟玻璃边缘的色散。 */
+.fracture-skin { display:none; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) > .fracture-skin {
+  display:block; position:absolute; inset:0; z-index:2; border-radius:inherit; pointer-events:none;
+  background-image:url('./fracture-prism.svg'), radial-gradient(ellipse 42% 56% at 83% 25%,rgba(109,224,255,.22),transparent 82%), radial-gradient(ellipse 36% 55% at 85% 78%,rgba(250,130,210,.18),transparent 84%);
+  background-position:center; background-size:100% 100%; background-repeat:no-repeat;
+  opacity:var(--prism-opacity); -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,.52) 38%,#000 75%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,.52) 38%,#000 75%);
+}
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) > :not(.fracture-skin) { position:relative; z-index:3; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .next-card { isolation:isolate; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .motivation-quote { isolation:isolate; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .metric-card::after {
+  background-image:url('./fracture-prism.svg'),radial-gradient(circle at 82% 24%,rgba(122,232,255,.18),transparent 38%),radial-gradient(circle at 83% 65%,rgba(250,145,228,.14),transparent 34%);
+  background-size:100% 100%; opacity:calc(var(--prism-opacity) * .76);
+  -webkit-mask-image:linear-gradient(90deg,transparent 10%,rgba(0,0,0,.45) 54%,#000);
+  mask-image:linear-gradient(90deg,transparent 10%,rgba(0,0,0,.45) 54%,#000);
+}
+@media(max-width:760px) {
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .next-card > .fracture-skin { opacity:var(--prism-opacity); }
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .motivation-quote > .fracture-skin { opacity:calc(var(--prism-opacity) * .62); }
+}
+@media(prefers-reduced-transparency:reduce) {
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .fracture-skin { opacity:calc(var(--prism-opacity) * .72); }
+}
