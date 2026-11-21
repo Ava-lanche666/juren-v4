@@ -15,9 +15,9 @@ const FONT_KEY = 'juren.ui.fontSize';
 const FRACTURE_KEY = 'juren.ui.glassFracture';
 const FRACTURE_OPTIONS = [
   { id: 'off', name: '关闭', detail: '保持完整的液态玻璃' },
-  { id: 'hairline', name: '细裂', detail: '轻微的裂纹线条' },
-  { id: 'ice', name: '冰裂', detail: '放射状的冰面裂纹' },
-  { id: 'crystal', name: '晶片', detail: '更明显的几何碎片' },
+  { id: 'hairline', name: '细裂', detail: '边缘细裂与微小分叉' },
+  { id: 'ice', name: '冰裂', detail: '局部撞击点与放射裂纹' },
+  { id: 'crystal', name: '晶片', detail: '裂纹交汇处的折光碎片' },
 ];
 const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
 const DARK_THEMES = new Set(['night', 'graphite']);
