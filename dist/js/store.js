@@ -184,7 +184,7 @@ export async function unlock(username, password) {
     // 修复旧版混用缓存留下的“已有错题但等级为 0”，并持久化迁移结果。
     try {
       await flush();
-      if (previousSchema === SCHEMA_VERSION && Number(previousTotal) === 0 && state.questions.length === 1) {
+      if (state.questions.length === 1 && (previousSchema !== SCHEMA_VERSION || !Number(previousTotal))) {
         session.repairedFirstLevel = true; // 仅本次会话使用，不写入保险箱。
       }
     }

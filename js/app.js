@@ -2,7 +2,7 @@
  * 单页 PWA，无构建依赖。视图用模板字符串渲染，交互用事件委托。
  */
 
-import * as store from './store.js?v=49';
+import * as store from './store.js?v=50';
 import { levelInfo, levelOf } from './levels.js';
 import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=45';
 import * as remember from './remember.js';
