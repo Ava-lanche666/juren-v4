@@ -39,8 +39,11 @@
   -webkit-mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
   mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
 }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.timeline-board,.topbar,.bottom-nav)::after {
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.topbar,.bottom-nav)::after {
   background-size:360px 260px; background-repeat:repeat;
+}
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.timeline-board)::after {
+  background-image:url('./fracture-prism.svg'); background-size:100% 100%; background-repeat:no-repeat; opacity:calc(var(--large-opacity) * .58);
 }
 /* 设置是阅读和操作区域，卡片不再横穿粗线；选项缩略图直接展示实际开片。 */
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) .settings-card::after { content:none; }
