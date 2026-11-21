@@ -2464,6 +2464,9 @@ function openQuestionSheet(qid) {
         <button class="btn btn--ghost" data-action="review-question" data-result="again" data-id="${esc(q.id)}" type="button">还是没思路</button>
       </div>
       <p class="sheet-note">做对后掌握度 +12，下次复习间隔按掌握度自动拉长；还是不会则明天再来，并记一次错因。</p>
+      <div class="q-delete-row">
+        <button class="btn btn--danger" data-action="delete-question" data-id="${esc(q.id)}" type="button">${icon('trash', 14)} 删除这道错题</button>
+      </div>
     </div>`;
   openSheet({ title: `错题 #${String(q.no || 0).padStart(3, '0')}`, kicker: `${q.subject} / ${q.errorType || '未标注错因'}`, body });
   showQuestionMath($('#questionDetailText'), q.text);
@@ -2493,6 +2496,32 @@ function reviewQuestion(qid, result) {
   if (ui.view === 'book' || ui.view === 'coach') renderView();
   renderShell();
   showToast(good ? '掌握度 +12，下次间隔已拉长' : '已安排明天再复习');
+}
+
+async function deleteQuestion(qid, button) {
+  const q = state.questions.find((item) => item.id === qid);
+  if (!q) { showToast('这道错题已经不存在', 'error'); return; }
+  if (!confirm(`确定删除错题 #${String(q.no || 0).padStart(3, '0')}？\n题目、原图和复习记录将从本机移除，此操作无法撤销。`)) return;
+
+  if (button) { button.disabled = true; button.textContent = '正在删除…'; }
+  const previousQuestions = state.questions;
+  const previousChats = state.chats;
+  state.questions = previousQuestions.filter((item) => item.id !== qid);
+  // 对话保留原来的提问，其关联分析卡在错题删除后不再有内容。
+  state.chats = previousChats.filter((message) => !(message.questionId === qid && message.role === 'assistant' && message.kind === 'analysis'));
+  try {
+    store.persistSoon(0);
+    await store.flush();
+  } catch (err) {
+    state.questions = previousQuestions;
+    state.chats = previousChats;
+    if (button?.isConnected) { button.disabled = false; button.innerHTML = `${icon('trash', 14)} 删除这道错题`; }
+    throw new Error(`删除没有保存成功：${err.message}`);
+  }
+  closeSheet();
+  renderShell();
+  renderView();
+  showToast('错题已删除');
 }
 
 function explainSimple(qid) {
@@ -2948,6 +2977,9 @@ async function handleAction(action, ds = {}, el = null) {
       break;
     case 'review-question':
       reviewQuestion(ds.id, ds.result);
+      break;
+    case 'delete-question':
+      await deleteQuestion(ds.id, el);
       break;
     case 'toggle-pref': {
       const prefs = state.profile.learner.preferences || [];

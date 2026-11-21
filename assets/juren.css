@@ -1478,6 +1478,8 @@ svg { display: block; }
 .answer-box p { font-size: calc(11px * var(--user-font-scale)); line-height: 1.7; white-space: pre-wrap; }
 .answer-box--correct { background: rgba(63, 107, 255, 0.1); border-color: rgba(110, 150, 255, 0.24); }
 .review-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
+.q-delete-row { display: flex; justify-content: flex-end; padding-top: 12px; border-top: 1px solid var(--line-soft); }
+.q-delete-row .btn { min-height: 42px; }
 .review-history { display: flex; gap: 4px; flex-wrap: wrap; }
 .review-history span { font-family: var(--mono); font-size: calc(8px * var(--user-font-scale)); color: var(--ink-3); padding: 2px 5px; border: 1px solid var(--line-soft); border-radius: 3px; }
 .encrypted-banner { display: flex; align-items: flex-start; gap: 9px; padding: 10px 11px; border-radius: var(--r-sm); background: rgba(63, 107, 255, 0.08); border: 1px solid rgba(110, 150, 255, 0.18); }
