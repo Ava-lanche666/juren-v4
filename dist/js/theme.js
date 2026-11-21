@@ -87,7 +87,7 @@ export function setGlassFracture(id) {
 export function glassFracturePickerHTML() {
   const selected = document.documentElement.dataset.glassFracture || 'off';
   return `<div class="fracture-control" role="group" aria-label="玻璃开片效果">
-    <div class="fracture-heading"><b>玻璃开片效果</b><small>小玻璃细密，大玻璃疏朗；不影响内容与操作。</small></div>
+    <div class="fracture-heading"><b>玻璃开片效果</b><small>主要用于装饰卡片；教练内容与时间轴保持清晰。</small></div>
     <div class="fracture-options">
       ${FRACTURE_OPTIONS.map((option) => `<button class="fracture-option" type="button" data-fracture-choice="${option.id}" aria-pressed="${selected === option.id}" title="${option.detail}"><span class="fracture-sample fracture-sample--${option.id}" aria-hidden="true"></span><span class="fracture-label"><b>${option.name}</b><small>${option.detail}</small></span></button>`).join('')}
     </div>

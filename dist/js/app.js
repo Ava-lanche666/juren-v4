@@ -3,7 +3,7 @@
  */
 
 import * as store from './store.js';
-import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=41';
+import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=45';
 import * as remember from './remember.js';
 import { icon, weatherMeta, weatherIcon, weatherTip } from './icons.js';
 import {

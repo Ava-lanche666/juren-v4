@@ -30,19 +30,16 @@
 :root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.60; --large-opacity:.56; }
 :root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.73; --large-opacity:.75; }
 :root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.83; --large-opacity:.82; }
-/* 小玻璃使用均匀细密的瓷器开片；纹理只在玻璃表层。 */
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
+/* 开片仅用于装饰卡片；教练内容、题目、时间轴与导航保持清晰。 */
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card) { position:relative; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card)::after {
   content:""; position:absolute; inset:0; z-index:3; border-radius:inherit; pointer-events:none;
   background:var(--fracture-image) center / 100% 100% no-repeat;
   opacity:var(--fracture-opacity);
   -webkit-mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
   mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
 }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.topbar,.bottom-nav)::after {
-  background-size:360px 260px; background-repeat:repeat;
-}
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.timeline-board)::after {
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .auth-card::after {
   background-image:url('./fracture-prism.svg'); background-size:100% 100%; background-repeat:no-repeat; opacity:calc(var(--large-opacity) * .58);
 }
 /* 设置是阅读和操作区域，卡片不再横穿粗线；选项缩略图直接展示实际开片。 */
@@ -70,7 +67,7 @@
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) { isolation:isolate; }
 @media(max-width:760px) { .fracture-options { grid-template-columns:repeat(2,minmax(0,1fr)); } .fracture-option { min-height:62px; } }
 @media(prefers-reduced-transparency:reduce) {
-  :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after { opacity:calc(var(--fracture-opacity) * .65); }
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card)::after { opacity:calc(var(--fracture-opacity) * .65); }
   :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .fracture-skin { opacity:calc(var(--large-opacity) * .65); }
 }
 @media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }
