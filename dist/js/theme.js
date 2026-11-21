@@ -7,7 +7,7 @@ export const THEMES = [
   { id: 'mono', name: '极简银白', detail: '留白与清晰线条，专注内容' },
   { id: 'aurora', name: '极光玻璃', detail: '轻盈的雾紫色与通透层次' },
   { id: 'graphite', name: '石墨黑', detail: '沉稳深灰，精细的薄荷色点缀' },
-  { id: 'revolution', name: '人民', detail: '镰刀锤子、红色版画与继续向前的力量' },
+  { id: 'revolution', name: '东方红', detail: '镰刀锤子、红色版画与继续向前的力量' },
   { id: 'plum', name: '梅', detail: '飞雪红梅、暖色纸面与冬日的静心' },
 ];
 
