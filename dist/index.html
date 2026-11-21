@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="聚仁">
+  <meta name="theme-color" content="#f4eedf">
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('juren.ui.theme');
+      document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'mono', 'aurora', 'graphite', 'revolution', 'plum'].includes(savedTheme) ? savedTheme : 'warm';
+    } catch (_) { document.documentElement.dataset.theme = 'warm'; }
+  </script>
+  <meta name="description" content="聚仁：把错题变成方法，把日程排成节奏。一个本地优先、可安装到手机和电脑的学习助手。">
+  <title>聚仁 · 全能学习助手</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/favicon-32.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="./assets/juren.css?v=25">
+  <link id="warmStyles" rel="stylesheet" href="./assets/warm.css?v=25">
+  <script>document.getElementById('warmStyles').disabled = ['night', 'graphite'].includes(document.documentElement.dataset.theme);</script>
+  <link rel="stylesheet" href="./assets/themes.css?v=25">
+  <link rel="stylesheet" href="./assets/premium.css">
+  <link rel="stylesheet" href="./assets/question-photo.css?v=25">
+  <link rel="stylesheet" href="./assets/glass.css?v=25">
+  <link rel="stylesheet" href="./assets/week-agenda.css?v=25">
+  <link rel="stylesheet" href="./assets/personalize.css?v=32">
+  <link rel="stylesheet" href="./assets/plum.css?v=34">
+</head>
+<body>
+  <div class="plum-snow" aria-hidden="true"></div>
+  <div id="boot" class="boot">
+    <div class="boot-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+    <p>正在打开你的空间…</p>
+  </div>
+
+  <div id="authView" class="auth" hidden>
+    <section class="auth-visual" aria-label="聚仁介绍">
+      <div class="auth-visual-top">
+        <span class="brand-lockup brand-lockup--light">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>聚仁<em>JUREN</em></span>
+        </span>
+        <span class="auth-version">学习助手 · 原型 0.2</span>
+      </div>
+
+      <div class="auth-copy">
+        <p class="eyebrow eyebrow--light">A QUIET PLACE FOR YOUR LEARNING</p>
+        <h1>让每一道错题，<br>长成你的方法。</h1>
+        <p class="auth-lede">错题教练、平行时间轴、通知捕手。<br>不追着你打卡，只帮你把混乱排成节奏。</p>
+      </div>
+
+      <div class="auth-timeline" aria-hidden="true">
+        <div class="auth-lane">
+          <span>周一</span>
+          <div class="auth-rail"><i class="a"></i><i class="b"></i><i class="c"></i></div>
+          <em>晴 18°</em>
+        </div>
+        <div class="auth-lane">
+          <span>周二</span>
+          <div class="auth-rail"><i class="b"></i><i class="d"></i></div>
+          <em>雨 14°</em>
+        </div>
+        <div class="auth-lane">
+          <span>周三</span>
+          <div class="auth-rail"><i class="a"></i><i class="e"></i><i class="c"></i></div>
+          <em>多云 16°</em>
+        </div>
+        <div class="auth-lane">
+          <span>周四</span>
+          <div class="auth-rail"><i class="d"></i><i class="b"></i></div>
+          <em>晴 19°</em>
+        </div>
+      </div>
+
+      <div class="auth-principles">
+        <div><strong>01</strong><span>错题不是收藏，<br>是下一次的判断</span></div>
+        <div><strong>02</strong><span>日程不是清单，<br>是能看见的节奏</span></div>
+        <div><strong>03</strong><span>数据不是燃料，<br>是你自己的东西</span></div>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="auth-card">
+        <div class="auth-card-top">
+          <span class="brand-lockup brand-lockup--dark">
+            <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>聚仁<em>JUREN</em></span>
+          </span>
+          <span class="pill pill--quiet">本地加密</span>
+        </div>
+
+        <div class="auth-theme-picker theme-picker" role="group" aria-label="选择界面风格">
+          <span class="theme-picker-label">界面风格</span>
+          <div class="theme-options theme-options--compact">
+            <button class="theme-option" type="button" data-theme-choice="warm" aria-pressed="false" title="暖米黄"><span class="theme-swatch" aria-hidden="true"></span><span>暖米黄</span></button>
+            <button class="theme-option" type="button" data-theme-choice="sky" aria-pressed="false" title="清爽蓝"><span class="theme-swatch" aria-hidden="true"></span><span>清爽蓝</span></button>
+            <button class="theme-option" type="button" data-theme-choice="forest" aria-pressed="false" title="森林绿"><span class="theme-swatch" aria-hidden="true"></span><span>森林绿</span></button>
+            <button class="theme-option" type="button" data-theme-choice="night" aria-pressed="false" title="深夜蓝"><span class="theme-swatch" aria-hidden="true"></span><span>深夜蓝</span></button>
+            <button class="theme-option" type="button" data-theme-choice="mono" aria-pressed="false" title="极简银白"><span class="theme-swatch" aria-hidden="true"></span><span>极简银白</span></button>
+            <button class="theme-option" type="button" data-theme-choice="aurora" aria-pressed="false" title="极光玻璃"><span class="theme-swatch" aria-hidden="true"></span><span>极光玻璃</span></button>
+            <button class="theme-option" type="button" data-theme-choice="graphite" aria-pressed="false" title="石墨黑"><span class="theme-swatch" aria-hidden="true"></span><span>石墨黑</span></button>
+            <button class="theme-option" type="button" data-theme-choice="revolution" aria-pressed="false" title="人民"><span class="theme-swatch" aria-hidden="true"></span><span>人民</span></button>
+            <button class="theme-option" type="button" data-theme-choice="plum" aria-pressed="false" title="梅"><span class="theme-swatch" aria-hidden="true"></span><span>梅</span></button>
+          </div>
+        </div>
+
+        <div class="auth-heading">
+          <p class="eyebrow" id="authKicker">WELCOME BACK</p>
+          <h2 id="authTitle">回到你的学习空间</h2>
+          <p id="authSub">输入密码，解开只属于你的本地保险箱。</p>
+        </div>
+
+        <form id="authForm" aria-labelledby="authTitle" novalidate>
+          <div id="loginFields">
+            <label class="field">
+              <span>用户名</span>
+              <input id="loginUser" name="username" autocomplete="username" placeholder="例如：lin" required>
+            </label>
+            <label class="field">
+              <span>密码</span>
+              <input id="loginPass" name="password" type="password" autocomplete="current-password" placeholder="至少 8 位" required>
+            </label>
+          </div>
+
+          <div id="createFields" hidden>
+            <label class="field">
+              <span>怎么称呼你</span>
+              <input id="createName" name="displayName" autocomplete="nickname" placeholder="例如：林同学">
+            </label>
+            <label class="field">
+              <span>专业 / 方向（可选）</span>
+              <input id="createMajor" name="major" placeholder="计算机 / 临床医学 / 汉语言…" maxlength="40">
+            </label>
+            <label class="field">
+              <span>用户名</span>
+              <input id="createUser" name="username" autocomplete="username" placeholder="用于登录，例如：lin" maxlength="32">
+            </label>
+            <div class="field-row">
+              <label class="field">
+                <span>密码</span>
+                <input id="createPass" name="password" type="password" autocomplete="new-password" placeholder="至少 8 位" minlength="8">
+              </label>
+              <label class="field">
+                <span>确认密码</span>
+                <input id="createPass2" name="password2" type="password" autocomplete="new-password" placeholder="再输一次">
+              </label>
+            </div>
+            <p class="sheet-note" style="margin:0">创建后是一个空白空间，不会自动放示例日程；你可以从第一条通知或第一道错题开始。</p>
+          </div>
+
+          <label class="remember-choice">
+            <input id="rememberDevice" type="checkbox">
+            <span><b>在这台设备上记住我</b><small>下次打开自动进入，暂停超时锁定；仅在自己的手机上开启</small></span>
+          </label>
+
+          <p id="authError" class="form-error" role="alert" hidden></p>
+          <button id="authSubmit" class="btn btn--primary btn--block" type="submit">
+            <span>解锁空间</span>
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </form>
+
+        <div class="auth-alt">
+          <button id="authSwitch" class="link-btn" type="button">创建新空间</button>
+        </div>
+
+        <div class="auth-privacy">
+          <span class="icon-badge" aria-hidden="true">
+            <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          </span>
+          <p>数据以 AES-256-GCM 加密后仅存本机。选择“记住我”时，登录密码会加密保存在这台设备上；锁定空间会关闭自动解锁。</p>
+        </div>
+      </div>
+
+      <p class="auth-foot">聚仁 · 为大学生做的学习空间 <span>·</span> 无需云端账号，也不上传你的错题</p>
+    </section>
+  </div>
+
+  <div id="appView" class="app" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-lockup brand-lockup--light">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>聚仁<em>JUREN</em></span>
+        </span>
+        <span class="sidebar-tag">STUDY OS</span>
+      </div>
+
+      <nav class="nav" aria-label="主导航">
+        <button class="nav-item is-active" data-nav="timeline" type="button">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2M8 17.5h2"/></svg></span>
+          <span><b>时间轴</b><small>这周怎么过</small></span>
+        </button>
+        <button class="nav-item" data-nav="coach" type="button">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9.2 9.2 0 0 1-3.8-.8L4 20l1.2-4a8 8 0 0 1-1.2-4.2A8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5Z"/><path d="M8.5 11.5h.01M12.5 11.5h.01M16.5 11.5h.01"/></svg></span>
+          <span><b>错题教练</b><small>对话式拆解</small></span>
+        </button>
+        <button class="nav-item" data-nav="book" type="button">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20"/><path d="M8 7h7"/></svg></span>
+          <span><b>错题本</b><small>复习与掌握度</small></span>
+        </button>
+        <button class="nav-item" data-nav="settings" type="button">
+          <span class="nav-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4v-.2a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3v-4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.4 7 7.2 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3h4v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L20 7.2l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg></span>
+          <span><b>设置与扩展</b><small>模型、隐私、模块</small></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-focus" id="sidebarFocus">
+        <p class="eyebrow eyebrow--light">NEXT / 下一件</p>
+        <p class="sidebar-focus-title" id="sidebarFocusTitle">今天还没有安排</p>
+        <div class="sidebar-meter"><i id="sidebarMeterBar" style="width:0%"></i></div>
+        <p class="sidebar-focus-sub" id="sidebarFocusSub">留一点空白给意外。</p>
+      </div>
+
+      <div class="sidebar-foot">
+        <button class="user-chip" data-nav="settings" type="button">
+          <span class="avatar" id="userAvatar">林</span>
+          <span class="user-meta"><b id="userName">林同学</b><small><i class="dot"></i> 本地保险箱</small></span>
+          <svg class="icon chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <button class="lock-btn" id="lockBtn" type="button" title="锁定空间">
+          <svg class="icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          锁定
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="mobile-brand brand-lockup brand-lockup--dark">
+            <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>聚仁</span>
+          </span>
+          <div class="topbar-title">
+            <p class="eyebrow" id="topbarKicker">MONDAY, 16 NOV</p>
+            <h1 id="topbarTitle">时间轴</h1>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="weather-chip" id="weatherChip" type="button" title="天气与位置">
+            <span id="weatherChipIcon"></span>
+            <span><b id="weatherChipTemp">--°</b><small id="weatherChipCity">北京</small></span>
+          </button>
+          <button class="btn btn--ghost btn--icon mobile-only" id="mobileLock" type="button" title="锁定空间">
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          </button>
+          <button class="btn btn--primary topbar-add" id="quickAddBtn" type="button">
+            <svg class="icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span>新日程</span>
+          </button>
+        </div>
+      </header>
+
+      <div id="viewRoot" class="view-root" tabindex="-1"></div>
+    </main>
+
+    <nav class="bottom-nav" aria-label="移动端导航">
+      <button class="bottom-item is-active" data-nav="timeline" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2M8 17.5h2"/></svg>
+        <span>时间轴</span>
+      </button>
+      <button class="bottom-item" data-nav="coach" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9.2 9.2 0 0 1-3.8-.8L4 20l1.2-4a8 8 0 0 1-1.2-4.2A8.4 8.4 0 0 1 12.5 3 8.4 8.4 0 0 1 21 11.5Z"/></svg>
+        <span>教练</span>
+      </button>
+      <button class="bottom-item" data-nav="book" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v18H6.5A2.5 2.5 0 0 1 4 18.5v-13Z"/><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20"/></svg>
+        <span>错题本</span>
+      </button>
+      <button class="bottom-item" data-nav="settings" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4v-.2a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3v-4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.4 7 7.2 4.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6V3h4v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L20 7.2l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+        <span>设置</span>
+      </button>
+    </nav>
+  </div>
+
+  <dialog id="sheet" class="sheet">
+    <div class="sheet-head">
+      <div>
+        <p class="eyebrow" id="sheetKicker">DETAIL</p>
+        <h2 id="sheetTitle">详情</h2>
+      </div>
+      <button class="btn btn--ghost btn--icon" id="sheetClose" type="button" aria-label="关闭">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+  </dialog>
+
+  <div class="toast-root" id="toastRoot" aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div class="noscript">聚仁需要启用 JavaScript 才能运行。你的数据不会被上传。</div>
+  </noscript>
+
+  <script type="module" src="./js/app.js?v=34"></script>
+</body>
+</html>
