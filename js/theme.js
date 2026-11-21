@@ -8,12 +8,12 @@ export const THEMES = [
   { id: 'aurora', name: '极光玻璃', detail: '轻盈的雾紫色与通透层次' },
   { id: 'graphite', name: '石墨黑', detail: '沉稳深灰，精细的薄荷色点缀' },
   { id: 'revolution', name: '人民', detail: '镰刀锤子、红色版画与继续向前的力量' },
-  { id: 'plum', name: '梅', detail: '飞雪梅枝、霜色玻璃与冬日的静心' },
+  { id: 'plum', name: '梅', detail: '飞雪红梅、暖色纸面与冬日的静心' },
 ];
 
 const KEY = 'juren.ui.theme';
 const FONT_KEY = 'juren.ui.fontSize';
-const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', mono: '#f5f6f7', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#e8eff2' };
+const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', mono: '#f5f6f7', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
 const DARK_THEMES = new Set(['night', 'graphite']);
 const valid = (id) => THEMES.some((theme) => theme.id === id);
 
