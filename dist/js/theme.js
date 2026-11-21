@@ -4,7 +4,6 @@ export const THEMES = [
   { id: 'sky', name: '清爽蓝', detail: '明亮清晰，适合整理计划' },
   { id: 'forest', name: '森林绿', detail: '自然平静，适合长时间学习' },
   { id: 'night', name: '深夜蓝', detail: '低亮度界面，适合夜间使用' },
-  { id: 'mono', name: '极简银白', detail: '留白与清晰线条，专注内容' },
   { id: 'aurora', name: '极光玻璃', detail: '轻盈的雾紫色与通透层次' },
   { id: 'graphite', name: '石墨黑', detail: '沉稳深灰，精细的薄荷色点缀' },
   { id: 'revolution', name: '东方红', detail: '镰刀锤子、红色版画与继续向前的力量' },
@@ -13,7 +12,7 @@ export const THEMES = [
 
 const KEY = 'juren.ui.theme';
 const FONT_KEY = 'juren.ui.fontSize';
-const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', mono: '#f5f6f7', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
+const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
 const DARK_THEMES = new Set(['night', 'graphite']);
 const valid = (id) => THEMES.some((theme) => theme.id === id);
 
@@ -45,6 +44,7 @@ export function setTheme(id) {
 
 export function initTheme() {
   applyTheme(currentTheme());
+  try { if (localStorage.getItem(KEY) === 'mono') localStorage.setItem(KEY, 'warm'); } catch (_) { /* 本次仍使用暖米黄 */ }
   try { applyFontSize(Number(localStorage.getItem(FONT_KEY)) || 100); } catch (_) { applyFontSize(100); }
   document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-theme-choice]');

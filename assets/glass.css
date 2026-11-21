@@ -11,7 +11,6 @@
 :root[data-theme="warm"] { --glass-surface: rgba(255,253,247,.68); --glass-soft: rgba(255,253,247,.51); --glass-dock: rgba(251,247,236,.55); --glass-accent: 178,132,51; }
 :root[data-theme="sky"] { --glass-surface: rgba(250,254,255,.67); --glass-soft: rgba(250,254,255,.51); --glass-dock: rgba(239,248,253,.54); --glass-accent: 64,146,192; }
 :root[data-theme="forest"] { --glass-surface: rgba(250,254,250,.68); --glass-soft: rgba(250,254,250,.52); --glass-dock: rgba(239,249,238,.55); --glass-accent: 89,153,108; }
-:root[data-theme="mono"] { --glass-surface: rgba(255,255,255,.72); --glass-soft: rgba(255,255,255,.56); --glass-dock: rgba(248,250,250,.58); --glass-accent: 96,139,135; }
 :root[data-theme="aurora"] { --glass-surface: rgba(255,253,255,.61); --glass-soft: rgba(255,253,255,.45); --glass-dock: rgba(249,244,255,.49); --glass-accent: 155,115,205; --glass-shadow: 0 20px 55px rgba(82,60,132,.16), 0 4px 15px rgba(82,60,132,.055); }
 :root:is([data-theme="night"],[data-theme="graphite"]) {
   --glass-surface: rgba(24,32,53,.70);

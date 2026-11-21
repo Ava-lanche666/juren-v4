@@ -12,7 +12,7 @@
   <script>
     try {
       const savedTheme = localStorage.getItem('juren.ui.theme');
-      document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'mono', 'aurora', 'graphite', 'revolution', 'plum'].includes(savedTheme) ? savedTheme : 'warm';
+      document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'aurora', 'graphite', 'revolution', 'plum'].includes(savedTheme) ? savedTheme : 'warm';
     } catch (_) { document.documentElement.dataset.theme = 'warm'; }
   </script>
   <meta name="description" content="聚仁：把错题变成方法，把日程排成节奏。一个本地优先、可安装到手机和电脑的学习助手。">
@@ -24,9 +24,9 @@
   <link id="warmStyles" rel="stylesheet" href="./assets/warm.css?v=25">
   <script>document.getElementById('warmStyles').disabled = ['night', 'graphite'].includes(document.documentElement.dataset.theme);</script>
   <link rel="stylesheet" href="./assets/themes.css?v=25">
-  <link rel="stylesheet" href="./assets/premium.css">
+  <link rel="stylesheet" href="./assets/premium.css?v=36">
   <link rel="stylesheet" href="./assets/question-photo.css?v=25">
-  <link rel="stylesheet" href="./assets/glass.css?v=25">
+  <link rel="stylesheet" href="./assets/glass.css?v=36">
   <link rel="stylesheet" href="./assets/week-agenda.css?v=25">
   <link rel="stylesheet" href="./assets/personalize.css?v=32">
   <link rel="stylesheet" href="./assets/plum.css?v=34">
@@ -101,7 +101,6 @@
             <button class="theme-option" type="button" data-theme-choice="sky" aria-pressed="false" title="清爽蓝"><span class="theme-swatch" aria-hidden="true"></span><span>清爽蓝</span></button>
             <button class="theme-option" type="button" data-theme-choice="forest" aria-pressed="false" title="森林绿"><span class="theme-swatch" aria-hidden="true"></span><span>森林绿</span></button>
             <button class="theme-option" type="button" data-theme-choice="night" aria-pressed="false" title="深夜蓝"><span class="theme-swatch" aria-hidden="true"></span><span>深夜蓝</span></button>
-            <button class="theme-option" type="button" data-theme-choice="mono" aria-pressed="false" title="极简银白"><span class="theme-swatch" aria-hidden="true"></span><span>极简银白</span></button>
             <button class="theme-option" type="button" data-theme-choice="aurora" aria-pressed="false" title="极光玻璃"><span class="theme-swatch" aria-hidden="true"></span><span>极光玻璃</span></button>
             <button class="theme-option" type="button" data-theme-choice="graphite" aria-pressed="false" title="石墨黑"><span class="theme-swatch" aria-hidden="true"></span><span>石墨黑</span></button>
             <button class="theme-option" type="button" data-theme-choice="revolution" aria-pressed="false" title="东方红"><span class="theme-swatch" aria-hidden="true"></span><span>东方红</span></button>
@@ -299,6 +298,6 @@
     <div class="noscript">聚仁需要启用 JavaScript 才能运行。你的数据不会被上传。</div>
   </noscript>
 
-  <script type="module" src="./js/app.js?v=35"></script>
+  <script type="module" src="./js/app.js?v=36"></script>
 </body>
 </html>
