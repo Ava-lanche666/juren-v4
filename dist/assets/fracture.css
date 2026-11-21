@@ -8,7 +8,7 @@
 .fracture-option:hover { transform:translateY(-2px); border-color:var(--gold); }
 .fracture-option:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 .fracture-option[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold),0 5px 16px rgba(var(--glass-accent,120,120,160),.13); }
-.fracture-sample { flex:none; width:54px; height:43px; border:1px solid var(--line-strong); border-radius:11px; background-color:var(--surface-2); background-position:26% 18%; background-size:180% 180%; box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 7px rgba(22,34,46,.08); }
+.fracture-sample { flex:none; width:54px; height:43px; border:1px solid var(--line-strong); border-radius:11px; background-color:var(--surface-2); background-position:48% 44%; background-size:470% 390%; box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 7px rgba(22,34,46,.08); }
 .fracture-sample--off { background-image:linear-gradient(135deg,rgba(255,255,255,.72),transparent); }
 .fracture-sample--hairline { background-image:url('./fracture-hairline.svg'); }
 .fracture-sample--ice { background-image:url('./fracture-ice.svg'); }
@@ -27,49 +27,47 @@
 .auth-fracture-options button[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); font-weight:700; }
 .auth-fracture-options button:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 
-:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.72; --prism-opacity:.45; }
-:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.80; --prism-opacity:.78; }
-:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.88; --prism-opacity:1; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
+:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.52; --large-opacity:.48; }
+:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.66; --large-opacity:.68; }
+:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.78; --large-opacity:.78; }
+/* 小玻璃使用均匀细密的瓷器开片；纹理只在玻璃表层。 */
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
   content:""; position:absolute; inset:0; z-index:3; border-radius:inherit; pointer-events:none;
-  background-image:var(--fracture-image),radial-gradient(ellipse at 7% 8%,rgba(255,255,255,.14),transparent 37%),radial-gradient(ellipse at 96% 89%,rgba(var(--glass-accent,120,120,160),.07),transparent 38%);
-  background-position:center,center,center; background-size:100% 100%,cover,cover; background-repeat:no-repeat;
+  background:var(--fracture-image) center / 100% 100% no-repeat;
   opacity:var(--fracture-opacity);
-  -webkit-mask-image:radial-gradient(ellipse at 50% 52%,rgba(0,0,0,.25) 15%,rgba(0,0,0,.64) 48%,#000 100%);
-  mask-image:radial-gradient(ellipse at 50% 52%,rgba(0,0,0,.25) 15%,rgba(0,0,0,.64) 48%,#000 100%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
+  mask-image:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,.22) 15%,rgba(0,0,0,.72) 68%,#000 100%);
 }
-@media(max-width:760px) {
-  .fracture-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .fracture-option { min-height:62px; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.timeline-board,.topbar,.bottom-nav)::after {
+  background-size:360px 260px; background-repeat:repeat;
 }
-@media(prefers-reduced-transparency:reduce) {
-  :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after { opacity:calc(var(--fracture-opacity) * .65); }
-}
-@media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }
+/* 设置是阅读和操作区域，卡片不再横穿粗线；选项缩略图直接展示实际开片。 */
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .settings-card::after { content:none; }
+.fracture-option[aria-pressed="true"] .fracture-sample { border-color:var(--gold); box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 2px 9px rgba(var(--glass-accent,120,120,160),.19); }
+.fracture-sample--hairline { background-color:color-mix(in srgb,var(--surface-2) 85%,#e1edf1); }
+.fracture-sample--ice { background-color:color-mix(in srgb,var(--surface-2) 81%,#e2e5e9); }
+.fracture-sample--crystal { background-color:color-mix(in srgb,var(--surface-2) 78%,#dae7eb); }
 
-/* 首页卡片使用专门的局部撞击纹。多层偏移线模拟玻璃边缘的色散。 */
+/* 大卡片的开片更疏朗，细玻璃保持较密纹理。 */
 .fracture-skin { display:none; }
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) > .fracture-skin {
   display:block; position:absolute; inset:0; z-index:2; border-radius:inherit; pointer-events:none;
-  background-image:url('./fracture-prism.svg'), radial-gradient(ellipse 42% 56% at 83% 25%,rgba(109,224,255,.22),transparent 82%), radial-gradient(ellipse 36% 55% at 85% 78%,rgba(250,130,210,.18),transparent 84%);
-  background-position:center; background-size:100% 100%; background-repeat:no-repeat;
-  opacity:var(--prism-opacity); -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,.52) 38%,#000 75%);
-  mask-image:linear-gradient(90deg,rgba(0,0,0,.28),rgba(0,0,0,.52) 38%,#000 75%);
+  background: url('./fracture-prism.svg') center / 100% 100% no-repeat;
+  opacity:var(--large-opacity);
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.32),rgba(0,0,0,.48) 38%,#000 100%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.32),rgba(0,0,0,.48) 38%,#000 100%);
+}
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .motivation-quote > .fracture-skin {
+  background-image:var(--fracture-image); background-size:100% 100%; opacity:calc(var(--fracture-opacity) * .72);
+  -webkit-mask-image:radial-gradient(ellipse at 45% 55%,rgba(0,0,0,.16),rgba(0,0,0,.52) 65%,#000);
+  mask-image:radial-gradient(ellipse at 45% 55%,rgba(0,0,0,.16),rgba(0,0,0,.52) 65%,#000);
 }
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) > :not(.fracture-skin) { position:relative; z-index:3; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .next-card { isolation:isolate; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .motivation-quote { isolation:isolate; }
-:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .metric-card::after {
-  background-image:url('./fracture-prism.svg'),radial-gradient(circle at 82% 24%,rgba(122,232,255,.18),transparent 38%),radial-gradient(circle at 83% 65%,rgba(250,145,228,.14),transparent 34%);
-  background-size:100% 100%; opacity:calc(var(--prism-opacity) * .76);
-  -webkit-mask-image:linear-gradient(90deg,transparent 10%,rgba(0,0,0,.45) 54%,#000);
-  mask-image:linear-gradient(90deg,transparent 10%,rgba(0,0,0,.45) 54%,#000);
-}
-@media(max-width:760px) {
-  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .next-card > .fracture-skin { opacity:var(--prism-opacity); }
-  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .motivation-quote > .fracture-skin { opacity:calc(var(--prism-opacity) * .62); }
-}
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page :is(.next-card,.motivation-quote) { isolation:isolate; }
+@media(max-width:760px) { .fracture-options { grid-template-columns:repeat(2,minmax(0,1fr)); } .fracture-option { min-height:62px; } }
 @media(prefers-reduced-transparency:reduce) {
-  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .fracture-skin { opacity:calc(var(--prism-opacity) * .72); }
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after { opacity:calc(var(--fracture-opacity) * .65); }
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .fracture-skin { opacity:calc(var(--large-opacity) * .65); }
 }
+@media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }

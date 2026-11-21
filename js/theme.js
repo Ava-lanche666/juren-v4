@@ -15,9 +15,9 @@ const FONT_KEY = 'juren.ui.fontSize';
 const FRACTURE_KEY = 'juren.ui.glassFracture';
 const FRACTURE_OPTIONS = [
   { id: 'off', name: '关闭', detail: '保持完整的液态玻璃' },
-  { id: 'hairline', name: '细裂', detail: '边缘细裂与微小分叉' },
-  { id: 'ice', name: '冰裂', detail: '局部撞击点与放射裂纹' },
-  { id: 'crystal', name: '晶片', detail: '裂纹交汇处的折光碎片' },
+  { id: 'hairline', name: '细裂', detail: '轻微、均匀的细釉纹' },
+  { id: 'ice', name: '冰裂', detail: '瓷器冰裂釉般的开片' },
+  { id: 'crystal', name: '开片', detail: '更清晰的细密开片纹理' },
 ];
 const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
 const DARK_THEMES = new Set(['night', 'graphite']);
@@ -86,8 +86,8 @@ export function setGlassFracture(id) {
 
 export function glassFracturePickerHTML() {
   const selected = document.documentElement.dataset.glassFracture || 'off';
-  return `<div class="fracture-control" role="group" aria-label="玻璃破碎效果">
-    <div class="fracture-heading"><b>玻璃破碎效果</b><small>选择玻璃表面的裂纹；不影响内容与操作。</small></div>
+  return `<div class="fracture-control" role="group" aria-label="玻璃开片效果">
+    <div class="fracture-heading"><b>玻璃开片效果</b><small>小玻璃细密，大玻璃疏朗；不影响内容与操作。</small></div>
     <div class="fracture-options">
       ${FRACTURE_OPTIONS.map((option) => `<button class="fracture-option" type="button" data-fracture-choice="${option.id}" aria-pressed="${selected === option.id}" title="${option.detail}"><span class="fracture-sample fracture-sample--${option.id}" aria-hidden="true"></span><span class="fracture-label"><b>${option.name}</b><small>${option.detail}</small></span></button>`).join('')}
     </div>
