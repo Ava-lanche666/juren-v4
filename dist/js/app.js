@@ -3,6 +3,7 @@
  */
 
 import * as store from './store.js';
+import { levelInfo, levelOf } from './levels.js';
 import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=45';
 import * as remember from './remember.js';
 import { icon, weatherMeta, weatherIcon, weatherTip } from './icons.js';
@@ -92,6 +93,8 @@ const MAX_DAY_MINUTES = 10 * 60;
 
 let state = null;
 let deferredInstall = null;
+let levelUpTimer = null;
+let levelUpReturnFocus = null;
 const savedFocusMinutes = (() => {
   try {
     const value = Number(localStorage.getItem('juren.focus.minutes'));
@@ -468,6 +471,7 @@ function renderShell() {
   const name = state.profile.name || '同学';
   $('#userName').textContent = name;
   $('#userAvatar').textContent = initials(name);
+  $('#sidebarLevelBadge').textContent = `Lv.${levelOf(state.meta?.questionTotalAdded)}`;
   $('#sidebarFocusTitle').textContent = nextEventLabel();
   const load = loadOfDay(todayISO());
   $('#sidebarMeterBar').style.width = `${Math.min(100, load.pct)}%`;
@@ -906,6 +910,7 @@ function scheduleAutoLock() {
 
 async function lockApp(auto = false) {
   if (!state) return;
+  closeLevelUp();
   clearTimeout(ui.lockTimer);
   clearInterval(ui.clockTimer);
   clearInterval(ui.focus.timer);
@@ -950,6 +955,13 @@ function bindGlobalEvents() {
   $('#quickAddBtn').addEventListener('click', () => openEventSheet());
   $('#weatherChip').addEventListener('click', openCitySheet);
   $('#sheetClose').addEventListener('click', closeSheet);
+  $('#levelUpContinue').addEventListener('click', closeLevelUp);
+  $('#levelUp').addEventListener('click', (event) => { if (event.target === $('#levelUp')) closeLevelUp(); });
+  window.addEventListener('keydown', (event) => {
+    if ($('#levelUp').hidden) return;
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); closeLevelUp(); }
+    if (event.key === 'Tab') { event.preventDefault(); $('#levelUpContinue').focus(); }
+  }, true);
   $('#sheet').addEventListener('click', handleSheetClick);
   $('#sheet').addEventListener('input', handleSheetInput);
   $('#sheet').addEventListener('change', handleSheetChange);
@@ -1667,7 +1679,10 @@ async function sendChat() {
     scrollChat();
 
     let pendingQuestion = null;
+    let questionSaved = false;
     const learnerBefore = structuredClone(state.profile.learner);
+    const totalBefore = state.meta.questionTotalAdded;
+    const levelBefore = levelOf(totalBefore);
     try {
       const imageOnly = withPhoto && !useOCR;
       const analysis = imageOnly ? {
@@ -1707,6 +1722,8 @@ async function sendChat() {
         reviews: [],
       };
       state.questions.push(question);
+      // 题目和唯一的累计计数在同一份加密快照里落盘；失败时一起回滚。
+      state.meta.questionTotalAdded = totalBefore + 1;
       pendingQuestion = question;
       userMsg.questionId = question.id;
 
@@ -1734,6 +1751,7 @@ async function sendChat() {
         createdAt: new Date().toISOString(),
       });
       await store.flush();
+      questionSaved = true;
       ui.wrongPhoto = null;
       ui.ocrPhoto = null;
       ui.cropActive = false;
@@ -1744,12 +1762,21 @@ async function sendChat() {
       ui.wrongMode = false;
       ui.typing = false;
       ui.busy = false;
-      store.persistSoon(0);
+      renderShell();
       renderView();
       setTimeout(scrollToLatestAnalysis, 30);
       showToast(`错题 #${String(no).padStart(3, '0')} 已保存到错题本`);
+      if (levelOf(state.meta.questionTotalAdded) > levelBefore) showLevelUp(levelOf(state.meta.questionTotalAdded));
     } catch (err) {
+      if (questionSaved) {
+        ui.typing = false;
+        ui.busy = false;
+        console.error('[juren] 错题已保存，界面更新失败', err);
+        showToast('错题已经保存，请刷新页面查看', 'error');
+        return;
+      }
       if (pendingQuestion && state) {
+        state.meta.questionTotalAdded = totalBefore;
         state.questions = state.questions.filter((q) => q.id !== pendingQuestion.id);
         state.chats = state.chats.filter((m) => m.questionId !== pendingQuestion.id || m.id === userMsg.id);
         userMsg.questionId = null;
@@ -1813,6 +1840,7 @@ async function sendChat() {
 
 function bookHTML() {
   const total = state.questions.length;
+  const level = levelInfo(state.meta?.questionTotalAdded);
   const due = state.questions.filter((q) => q.nextReview && q.nextReview <= todayISO()).length;
   const avg = total ? Math.round(state.questions.reduce((s, q) => s + masteryOf(q), 0) / total) : 0;
   const subjects = [...new Set(state.questions.map((q) => q.subject))];
@@ -1838,6 +1866,15 @@ function bookHTML() {
           <div class="book-stat"><b>${due}</b><span>待复习</span></div>
           <div class="book-stat"><b>${avg}%</b><span>平均掌握</span></div>
         </div>` : ''}
+      </div>
+
+      <div class="book-level" aria-label="错题等级 ${level.level}，${level.title}，再加 ${level.remaining} 道升级">
+        <div class="book-level-seal" aria-hidden="true">${level.level}</div>
+        <div class="book-level-content">
+          <div class="book-level-heading"><strong>Lv.${level.level} · ${level.title}</strong><span>累计录入 ${level.count} 道</span></div>
+          <div class="book-level-track" role="progressbar" aria-label="升级进度" aria-valuemin="0" aria-valuemax="${level.target}" aria-valuenow="${level.progress}"><i style="--progress:${level.progress / level.target * 100}%"></i></div>
+          <div class="book-level-note"><span>${level.progress} / ${level.target}</span><span>再加 ${level.remaining} 道升级</span></div>
+        </div>
       </div>
 
       ${total ? `
@@ -2090,6 +2127,30 @@ function openSheet({ title, kicker = 'DETAIL', body }) {
 function closeSheet() {
   const sheet = $('#sheet');
   if (sheet.open) sheet.close();
+}
+
+function closeLevelUp() {
+  clearTimeout(levelUpTimer);
+  levelUpTimer = null;
+  const overlay = $('#levelUp');
+  if (overlay?.hidden) return;
+  overlay.hidden = true;
+  if (levelUpReturnFocus?.isConnected) levelUpReturnFocus.focus({ preventScroll: true });
+  levelUpReturnFocus = null;
+}
+
+function showLevelUp(level) {
+  closeLevelUp();
+  const overlay = $('#levelUp');
+  const info = levelInfo(1 + (level - 1) * 3);
+  levelUpReturnFocus = document.activeElement;
+  $('#levelUpNumber').textContent = String(level);
+  $('#levelUpTitle').textContent = `Lv.${level} · ${info.title}`;
+  $('#levelUpMessage').textContent = `错题等级提升！再录入 ${info.remaining} 道，向下一等级前进。`;
+  $('.level-up-sparks', overlay).innerHTML = Array.from({ length: 18 }, (_, i) => `<i style="--i:${i}"></i>`).join('');
+  overlay.hidden = false;
+  overlay.focus({ preventScroll: true });
+  levelUpTimer = setTimeout(closeLevelUp, 5200);
 }
 
 
@@ -2643,11 +2704,12 @@ async function restoreBackup() {
   if (mode === 'replace' && !confirm('覆盖当前空间的全部内容？建议先导出当前备份。')) return;
   try {
     const incoming = await store.restorePortableBackup(ui.pendingBackup, pass);
+    const beforeLevel = levelOf(state.meta?.questionTotalAdded);
     let result;
     if (mode === 'merge') {
-      result = store.mergeState(incoming);
+      result = await store.mergeState(incoming);
     } else {
-      store.replaceState(incoming);
+      await store.replaceState(incoming);
       result = { replaced: true };
     }
     state = store.getState();
@@ -2659,6 +2721,7 @@ async function restoreBackup() {
     showToast(mode === 'merge'
       ? `合并完成：新增 ${result.events} 个日程、${result.questions} 道错题`
       : '已用备份覆盖当前空间');
+    if (mode === 'merge' && levelOf(state.meta.questionTotalAdded) > beforeLevel) showLevelUp(levelOf(state.meta.questionTotalAdded));
   } catch (err) {
     showToast(err.message || '恢复失败，密码可能不正确', 'error');
   }

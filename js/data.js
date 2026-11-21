@@ -5,7 +5,7 @@
 import { addDays, startOfWeek, toISODate } from './parser.js';
 import { DEFAULT_CITY, demoWeather } from './weather.js';
 
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 function dateAt(offset) {
   return toISODate(addDays(startOfWeek(new Date()), offset));
@@ -230,6 +230,7 @@ export function createInitialState({ name = '同学', withDemo = false, major = 
     weather: demoWeather(DEFAULT_CITY),
     modules: { weather: true, deadline: true, focus: false },
     meta: {
+      questionTotalAdded: questions.length,
       lastBackupAt: null,
       lastWeatherAt: null,
       source: withDemo ? 'demo' : 'blank',

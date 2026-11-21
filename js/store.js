@@ -109,6 +109,14 @@ export function migrateState(input) {
     }));
     s.schemaVersion = 2;
   }
+  s.questions = Array.isArray(s.questions) ? s.questions : [];
+  s.meta = s.meta || {};
+  if (from < 3) s.meta.questionTotalAdded = s.questions.length;
+  else {
+    const count = Number(s.meta.questionTotalAdded);
+    s.meta.questionTotalAdded = Number.isSafeInteger(count) && count >= 0
+      ? Math.max(count, s.questions.length) : s.questions.length;
+  }
   s.schemaVersion = SCHEMA_VERSION;
   return s;
 }
@@ -268,7 +276,7 @@ function mergeStats(a = {}, b = {}) {
 }
 
 /** 合并导入：保留现有数据，只新增；同 id 冲突时自动改 id。 */
-export function mergeState(incoming) {
+export async function mergeState(incoming) {
   if (!session) throw new Error('尚未登录');
   const inc = migrateState(incoming);
   const cur = session.state;
@@ -303,9 +311,11 @@ export function mergeState(incoming) {
       ...cur.meta,
       ...inc.meta,
       lastBackupAt: cur.meta?.lastBackupAt || inc.meta?.lastBackupAt || null,
+      questionTotalAdded: (cur.meta?.questionTotalAdded || 0) + questions.added,
     },
   };
-  persistSoon(0);
+  try { await flush(); }
+  catch (err) { session.state = cur; throw err; }
   return {
     events: events.added,
     questions: questions.added,
@@ -332,10 +342,12 @@ export async function restorePortableBackup(file, password) {
   return state;
 }
 
-export function replaceState(incoming) {
+export async function replaceState(incoming) {
   if (!session) throw new Error('尚未登录');
+  const previous = session.state;
   session.state = migrateState(incoming);
-  persistSoon(0);
+  try { await flush(); }
+  catch (err) { session.state = previous; throw err; }
 }
 
 export async function deleteCurrentAccount() {
