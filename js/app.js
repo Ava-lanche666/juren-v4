@@ -2,7 +2,7 @@
  * 单页 PWA，无构建依赖。视图用模板字符串渲染，交互用事件委托。
  */
 
-import * as store from './store.js';
+import * as store from './store.js?v=49';
 import { levelInfo, levelOf } from './levels.js';
 import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=45';
 import * as remember from './remember.js';
@@ -455,6 +455,10 @@ async function enterApp() {
     ? location.hash.replace('#', '') : 'timeline';
   renderShell();
   navigate(ui.view, true);
+  if (store.getSession()?.repairedFirstLevel) {
+    store.getSession().repairedFirstLevel = false;
+    showLevelUp(1);
+  }
   startClock();
   scheduleAutoLock();
   refreshWeather();
@@ -471,7 +475,7 @@ function renderShell() {
   const name = state.profile.name || '同学';
   $('#userName').textContent = name;
   $('#userAvatar').textContent = initials(name);
-  $('#sidebarLevelBadge').textContent = `Lv.${levelOf(state.meta?.questionTotalAdded)}`;
+  $('#sidebarLevelBadge').textContent = `Lv.${levelOf(Math.max(state.meta?.questionTotalAdded || 0, state.questions.length))}`;
   $('#sidebarFocusTitle').textContent = nextEventLabel();
   const load = loadOfDay(todayISO());
   $('#sidebarMeterBar').style.width = `${Math.min(100, load.pct)}%`;
@@ -1681,7 +1685,7 @@ async function sendChat() {
     let pendingQuestion = null;
     let questionSaved = false;
     const learnerBefore = structuredClone(state.profile.learner);
-    const totalBefore = state.meta.questionTotalAdded;
+    const totalBefore = Math.max(Number.isSafeInteger(state.meta.questionTotalAdded) ? state.meta.questionTotalAdded : 0, state.questions.length);
     const levelBefore = levelOf(totalBefore);
     try {
       const imageOnly = withPhoto && !useOCR;
@@ -1840,7 +1844,7 @@ async function sendChat() {
 
 function bookHTML() {
   const total = state.questions.length;
-  const level = levelInfo(state.meta?.questionTotalAdded);
+  const level = levelInfo(Math.max(state.meta?.questionTotalAdded || 0, state.questions.length));
   const due = state.questions.filter((q) => q.nextReview && q.nextReview <= todayISO()).length;
   const avg = total ? Math.round(state.questions.reduce((s, q) => s + masteryOf(q), 0) / total) : 0;
   const subjects = [...new Set(state.questions.map((q) => q.subject))];

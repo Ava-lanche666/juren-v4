@@ -9,7 +9,7 @@ import {
   decryptJSON, decryptPortable, deriveKey, encryptJSON, encryptPortable,
   PBKDF2_ITERATIONS, randomSalt,
 } from './crypto.js';
-import { createInitialState, SCHEMA_VERSION } from './data.js';
+import { createInitialState, SCHEMA_VERSION } from './data.js?v=49';
 
 const ACCOUNTS_KEY = 'zhixu.accounts.v1';
 const VAULT_PREFIX = 'zhixu.vault.v1.';
@@ -175,9 +175,21 @@ export async function unlock(username, password) {
   } catch {
     throw new Error('密码不正确，或数据已损坏');
   }
+  const previousSchema = state.schemaVersion;
+  const previousTotal = state.meta?.questionTotalAdded;
   state = migrateState(state);
   session = { account, key, state };
   localStorage.setItem(LAST_USER_KEY, account.username);
+  if (previousSchema !== SCHEMA_VERSION || previousTotal !== state.meta.questionTotalAdded) {
+    // 修复旧版混用缓存留下的“已有错题但等级为 0”，并持久化迁移结果。
+    try {
+      await flush();
+      if (previousSchema === SCHEMA_VERSION && Number(previousTotal) === 0 && state.questions.length === 1) {
+        session.repairedFirstLevel = true; // 仅本次会话使用，不写入保险箱。
+      }
+    }
+    catch (err) { console.warn('[juren] 等级数据修复暂未保存，下次打开会重试', err); }
+  }
   return session;
 }
 
@@ -311,7 +323,7 @@ export async function mergeState(incoming) {
       ...cur.meta,
       ...inc.meta,
       lastBackupAt: cur.meta?.lastBackupAt || inc.meta?.lastBackupAt || null,
-      questionTotalAdded: (cur.meta?.questionTotalAdded || 0) + questions.added,
+      questionTotalAdded: Math.max(cur.meta?.questionTotalAdded || 0, cur.questions?.length || 0) + questions.added,
     },
   };
   try { await flush(); }
