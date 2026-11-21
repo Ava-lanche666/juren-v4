@@ -27,9 +27,9 @@
 .auth-fracture-options button[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold); font-weight:700; }
 .auth-fracture-options button:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
 
-:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.52; --large-opacity:.48; }
-:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.66; --large-opacity:.68; }
-:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.78; --large-opacity:.78; }
+:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.60; --large-opacity:.56; }
+:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.73; --large-opacity:.75; }
+:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.83; --large-opacity:.82; }
 /* 小玻璃使用均匀细密的瓷器开片；纹理只在玻璃表层。 */
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
@@ -74,3 +74,6 @@
   :root[data-glass-fracture]:not([data-glass-fracture="off"]) .timeline-page .fracture-skin { opacity:calc(var(--large-opacity) * .65); }
 }
 @media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }
+
+/* 梅花背景已有清晰画面，不叠加旧版的圆环装饰。 */
+:root[data-theme="plum"] .next-card::before { content:none; }
