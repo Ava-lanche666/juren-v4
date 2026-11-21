@@ -34,10 +34,10 @@
 :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
   content:""; position:absolute; inset:0; z-index:3; border-radius:inherit; pointer-events:none;
   background-image:var(--fracture-image),radial-gradient(ellipse at 7% 8%,rgba(255,255,255,.14),transparent 37%),radial-gradient(ellipse at 96% 89%,rgba(var(--glass-accent,120,120,160),.07),transparent 38%);
-  background-position:center,center,center; background-size:cover,cover,cover; background-repeat:no-repeat;
+  background-position:center,center,center; background-size:100% 100%,cover,cover; background-repeat:no-repeat;
   opacity:var(--fracture-opacity);
-  -webkit-mask-image:radial-gradient(ellipse at 50% 52%,transparent 15%,rgba(0,0,0,.42) 48%,#000 100%);
-  mask-image:radial-gradient(ellipse at 50% 52%,transparent 15%,rgba(0,0,0,.42) 48%,#000 100%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 52%,rgba(0,0,0,.25) 15%,rgba(0,0,0,.64) 48%,#000 100%);
+  mask-image:radial-gradient(ellipse at 50% 52%,rgba(0,0,0,.25) 15%,rgba(0,0,0,.64) 48%,#000 100%);
 }
 @media(max-width:760px) {
   .fracture-options { grid-template-columns:repeat(2,minmax(0,1fr)); }

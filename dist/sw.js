@@ -3,7 +3,7 @@
  * 所有业务数据在 localStorage 的加密仓库里，离线也能打开。
  */
 
-const CACHE = 'juren-shell-v38';
+const CACHE = 'juren-shell-v39';
 const SHELL = [
   './',
   './index.html',
