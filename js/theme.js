@@ -12,6 +12,13 @@ export const THEMES = [
 
 const KEY = 'juren.ui.theme';
 const FONT_KEY = 'juren.ui.fontSize';
+const FRACTURE_KEY = 'juren.ui.glassFracture';
+const FRACTURE_OPTIONS = [
+  { id: 'off', name: '关闭', detail: '保持完整的液态玻璃' },
+  { id: 'hairline', name: '细裂', detail: '轻微的裂纹线条' },
+  { id: 'ice', name: '冰裂', detail: '放射状的冰面裂纹' },
+  { id: 'crystal', name: '晶片', detail: '更明显的几何碎片' },
+];
 const COLORS = { warm: '#f4eedf', sky: '#eaf3fa', forest: '#e9f2e8', night: '#05091b', aurora: '#eeeaf7', graphite: '#0b0e11', revolution: '#f6ece3', plum: '#f6eee6' };
 const DARK_THEMES = new Set(['night', 'graphite']);
 const valid = (id) => THEMES.some((theme) => theme.id === id);
@@ -46,17 +53,45 @@ export function initTheme() {
   applyTheme(currentTheme());
   try { if (localStorage.getItem(KEY) === 'mono') localStorage.setItem(KEY, 'warm'); } catch (_) { /* 本次仍使用暖米黄 */ }
   try { applyFontSize(Number(localStorage.getItem(FONT_KEY)) || 100); } catch (_) { applyFontSize(100); }
+  try { applyGlassFracture(localStorage.getItem(FRACTURE_KEY)); } catch (_) { applyGlassFracture('off'); }
   document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-theme-choice]');
     if (button) setTheme(button.dataset.themeChoice);
+    const fractureButton = event.target.closest('[data-fracture-choice]');
+    if (fractureButton) setGlassFracture(fractureButton.dataset.fractureChoice);
   });
   window.addEventListener('storage', (event) => {
     if (event.key === KEY) applyTheme(event.newValue);
     if (event.key === FONT_KEY) applyFontSize(Number(event.newValue) || 100);
+    if (event.key === FRACTURE_KEY) applyGlassFracture(event.newValue);
   });
   document.addEventListener('input', (event) => {
     if (event.target?.dataset?.fontSizeInput !== undefined) setFontSize(Number(event.target.value));
   });
+}
+
+function applyGlassFracture(id) {
+  const effect = FRACTURE_OPTIONS.some((option) => option.id === id) ? id : 'off';
+  document.documentElement.dataset.glassFracture = effect;
+  document.querySelectorAll('[data-fracture-choice]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.fractureChoice === effect));
+  });
+}
+
+export function setGlassFracture(id) {
+  if (!FRACTURE_OPTIONS.some((option) => option.id === id)) return;
+  applyGlassFracture(id);
+  try { localStorage.setItem(FRACTURE_KEY, id); } catch (_) { /* 本次仍可预览 */ }
+}
+
+export function glassFracturePickerHTML() {
+  const selected = document.documentElement.dataset.glassFracture || 'off';
+  return `<div class="fracture-control" role="group" aria-label="玻璃破碎效果">
+    <div class="fracture-heading"><b>玻璃破碎效果</b><small>选择玻璃表面的裂纹；不影响内容与操作。</small></div>
+    <div class="fracture-options">
+      ${FRACTURE_OPTIONS.map((option) => `<button class="fracture-option" type="button" data-fracture-choice="${option.id}" aria-pressed="${selected === option.id}" title="${option.detail}"><span class="fracture-sample fracture-sample--${option.id}" aria-hidden="true"></span><span class="fracture-label"><b>${option.name}</b><small>${option.detail}</small></span></button>`).join('')}
+    </div>
+  </div>`;
 }
 
 function applyFontSize(value) {

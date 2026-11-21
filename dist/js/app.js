@@ -3,7 +3,7 @@
  */
 
 import * as store from './store.js';
-import { fontSizeControlHTML, initTheme, themePickerHTML } from './theme.js?v=36';
+import { fontSizeControlHTML, glassFracturePickerHTML, initTheme, themePickerHTML } from './theme.js?v=37';
 import * as remember from './remember.js';
 import { icon, weatherMeta, weatherIcon, weatherTip } from './icons.js';
 import {
@@ -1921,6 +1921,7 @@ function settingsHTML() {
           <p>选一个适合当前学习状态的界面。点击即可预览，选择会保存在这台设备上。</p>
           ${themePickerHTML()}
           ${fontSizeControlHTML()}
+          ${glassFracturePickerHTML()}
         </section>
         <section class="settings-card">
           <h3>账户与隐私</h3>

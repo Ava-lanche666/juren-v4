@@ -13,7 +13,9 @@
     try {
       const savedTheme = localStorage.getItem('juren.ui.theme');
       document.documentElement.dataset.theme = ['warm', 'sky', 'forest', 'night', 'aurora', 'graphite', 'revolution', 'plum'].includes(savedTheme) ? savedTheme : 'warm';
-    } catch (_) { document.documentElement.dataset.theme = 'warm'; }
+      const savedFracture = localStorage.getItem('juren.ui.glassFracture');
+      document.documentElement.dataset.glassFracture = ['hairline', 'ice', 'crystal'].includes(savedFracture) ? savedFracture : 'off';
+    } catch (_) { document.documentElement.dataset.theme = 'warm'; document.documentElement.dataset.glassFracture = 'off'; }
   </script>
   <meta name="description" content="聚仁：把错题变成方法，把日程排成节奏。一个本地优先、可安装到手机和电脑的学习助手。">
   <title>聚仁 · 全能学习助手</title>
@@ -26,10 +28,11 @@
   <link rel="stylesheet" href="./assets/themes.css?v=25">
   <link rel="stylesheet" href="./assets/premium.css?v=36">
   <link rel="stylesheet" href="./assets/question-photo.css?v=25">
-  <link rel="stylesheet" href="./assets/glass.css?v=36">
+  <link rel="stylesheet" href="./assets/glass.css?v=37">
   <link rel="stylesheet" href="./assets/week-agenda.css?v=25">
   <link rel="stylesheet" href="./assets/personalize.css?v=32">
   <link rel="stylesheet" href="./assets/plum.css?v=34">
+  <link rel="stylesheet" href="./assets/fracture.css?v=37">
 </head>
 <body>
   <div class="plum-snow" aria-hidden="true"></div>
@@ -298,6 +301,6 @@
     <div class="noscript">聚仁需要启用 JavaScript 才能运行。你的数据不会被上传。</div>
   </noscript>
 
-  <script type="module" src="./js/app.js?v=36"></script>
+  <script type="module" src="./js/app.js?v=37"></script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+/* 可选的玻璃裂纹，仅作用于面板表层，不改变文字和交互。 */
+.fracture-control { margin-top:16px; padding:15px; border:1px solid var(--glass-edge,var(--line)); border-radius:20px; background:var(--glass-soft,var(--surface)); }
+.fracture-heading { display:grid; gap:3px; margin-bottom:12px; }
+.fracture-heading b { color:var(--ink); font-size:calc(14px * var(--user-font-scale)); }
+.fracture-heading small { color:var(--ink-2); font-size:calc(12px * var(--user-font-scale)); line-height:1.5; }
+.fracture-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; }
+.fracture-option { display:flex; align-items:center; gap:10px; min-width:0; padding:9px; border:1px solid var(--line-strong); border-radius:16px; background:var(--glass-surface,var(--surface)); color:var(--ink); text-align:left; font:inherit; cursor:pointer; transition:transform .18s,border-color .18s,box-shadow .18s; }
+.fracture-option:hover { transform:translateY(-2px); border-color:var(--gold); }
+.fracture-option:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
+.fracture-option[aria-pressed="true"] { border-color:var(--gold); box-shadow:inset 0 0 0 1px var(--gold),0 5px 16px rgba(var(--glass-accent,120,120,160),.13); }
+.fracture-sample { flex:none; width:54px; height:43px; border:1px solid var(--line-strong); border-radius:11px; background-color:var(--surface-2); background-position:center; background-size:cover; box-shadow:inset 0 1px 0 rgba(255,255,255,.7); }
+.fracture-sample--off { background-image:linear-gradient(135deg,rgba(255,255,255,.72),transparent); }
+.fracture-sample--hairline { background-image:url('./fracture-hairline.svg'); }
+.fracture-sample--ice { background-image:url('./fracture-ice.svg'); }
+.fracture-sample--crystal { background-image:url('./fracture-crystal.svg'); }
+.fracture-label { display:grid; gap:2px; min-width:0; }
+.fracture-label b { font-size:calc(13px * var(--user-font-scale)); white-space:nowrap; }
+.fracture-label small { color:var(--ink-2); font-size:calc(11px * var(--user-font-scale)); line-height:1.35; }
+
+:root[data-glass-fracture="hairline"] { --fracture-image:url('./fracture-hairline.svg'); --fracture-opacity:.50; }
+:root[data-glass-fracture="ice"] { --fracture-image:url('./fracture-ice.svg'); --fracture-opacity:.56; }
+:root[data-glass-fracture="crystal"] { --fracture-image:url('./fracture-crystal.svg'); --fracture-opacity:.67; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board) { position:relative; }
+:root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after {
+  content:""; position:absolute; inset:0; z-index:3; border-radius:inherit; pointer-events:none;
+  background:var(--fracture-image) center / cover no-repeat;
+  opacity:var(--fracture-opacity);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 52%,transparent 21%,rgba(0,0,0,.55) 57%,#000 100%);
+  mask-image:radial-gradient(ellipse at 50% 52%,transparent 21%,rgba(0,0,0,.55) 57%,#000 100%);
+}
+@media(max-width:760px) {
+  .fracture-options { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .fracture-option { min-height:62px; }
+}
+@media(prefers-reduced-transparency:reduce) {
+  :root[data-glass-fracture]:not([data-glass-fracture="off"]) :is(.auth-card,.metric-card,.q-card,.settings-card,.chat-panel,.profile-panel,.timeline-board,.topbar,.bottom-nav)::after { opacity:calc(var(--fracture-opacity) * .65); }
+}
+@media(prefers-reduced-motion:reduce) { .fracture-option { transition:none; } }
